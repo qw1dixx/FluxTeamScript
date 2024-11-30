@@ -1,10 +1,11 @@
 local cloneref = cloneref or function(o) return o end
+RunService = cloneref(game:GetService("RunService"))
 GuiService = cloneref(game:GetService("GuiService"))
 StarterGui = cloneref(game:GetService("StarterGui"))
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-   Name = "Lowcode.gg",
-   Icon = 'accessibility', -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
+   Name = "FluxTeam",
+   Icon = 'facebook', -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
    LoadingTitle = "",
    LoadingSubtitle = "",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
@@ -32,7 +33,7 @@ local Window = Rayfield:CreateWindow({
       FileName = "fluxteamkey", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
       SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
       GrabKeyFromSite = true, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
-      Key = {'lowcode-roblox-gg-community'} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+      Key = {'https://raw.githubusercontent.com/qw1dixx/FluxKey/refs/heads/main/key.fluxteam'} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
    }
 })
 
@@ -44,13 +45,13 @@ Rayfield:Notify({
 })
 
 Rayfield:Notify({
-   Title = "Lowcode.gg has been injected sucessfully",
-   Content = "Enjoy using Lowcode.gg!",
+   Title = "FluxTeam has been injected sucessfully",
+   Content = "Enjoy using FluxTeam!",
    Duration = 8,
-   Image = "accessibility",
+   Image = "facebook",
 })
 
-local Tab = Window:CreateTab("Lowcode.gg", "facebook")
+local Tab = Window:CreateTab("FluxTeam", "facebook")
 
 local Button = Tab:CreateButton({
    Name = "Open Roblox console",
@@ -66,15 +67,15 @@ local Button = Tab:CreateButton({
       Title = "Loading",
       Content = "Hold on a sec",
       Duration = 4,
-      Image = "accessibility",
+      Image = "facebook",
    })
-loadstring(game.HttpGet(game,"https://raw.githubusercontent.com/infyiff/backup/main/console.lua"))();
+
 	   wait(1)
 	Rayfield:Notify({
       Title = "Console",
       Content = "Press F9 to open the console",
       Duration = 3.5,
-      Image = "accessibility",
+      Image = "facebook",
    })
 end,
 })
@@ -102,7 +103,7 @@ local Button = Tab:CreateButton({
          Title = "Rejoining",
          Content = "Hold on a sec",
          Duration = 2,
-         Image = 'accessibility',
+         Image = 'facebook',
       })
       wait(1)
       
@@ -125,7 +126,7 @@ ts:Teleport(game.PlaceId, p)
          Title = "Auto Rejoin",
          Content = "Auto rejoin enabled",
          Duration = 3,
-         Image = "accessibility",
+         Image = "Facebook",
       })
    end,
 })
@@ -143,16 +144,33 @@ local Slider = Tab:CreateSlider({
 })
 
 local Button = Tab:CreateButton({
-   Name = "Sit",
+   Name = "Exit",
    Callback = function()
-      game:GetService("Players").PlayerAdded:Connect(function(player)
-         player.Chatted:Connect(function(msg)
-             if string.lower(msg) == "/sit" then
-                 if not player.Character then return end
-     
-                 player.Character:WaitForChild("Humanoid").Sit = true
-             end
-         end)
-     end)
+      game:Shutdown()
+   end,
+})
+
+local Toggle = Tab:CreateToggle({
+   Name = "Noclip",
+   CurrentValue = false,
+   Flag = "ToggleNC", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+         local Noclip = nil
+local Clip = nil
+
+function noclip()
+	Clip = false
+	local function Nocl()
+		if Clip == false and game.Players.LocalPlayer.Character ~= nil then
+			for _,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+				if v:IsA('BasePart') and v.CanCollide and v.Name ~= floatName then
+					v.CanCollide = Value
+				end
+			end
+		end
+		wait(0.21) -- basic optimization
+	end
+	Noclip = game:GetService('RunService').Stepped:Connect(Nocl)
+end
    end,
 })
